@@ -13,6 +13,8 @@ const {authenticationToken} = require('../utils');
 router.post('/auth/register', auth.registerUser);
 router.post('/auth/login', auth.loginUser);
 
+router.put('/users/:id', authenticationToken, user.updateUser)
+router.delete('/users/:id', authenticationToken, user.deleteUser)
 router.get('/users', authenticationToken, user.getUsers)
 
 
