@@ -12,7 +12,7 @@ const registerUser = async (req, res) => {
         const token = generateToken({user_id: user.rows[0].id, email: email});
         // save token
         user.rows[0].token = token;
-        res.status(200).header('authorization', token).send({message: 'user added', user: user});
+        res.status(200).header('authorization', token).send({message: 'user added', user: user.rows});
     } catch(err) {
         res.status(500).send(err.message)
     }
@@ -27,9 +27,8 @@ const loginUser = async (req, res) => {
             const token = generateToken({user_id: user.rows[0].id, email: email});
             // save token
             user.rows[0].token = token;
-            res.status(200).header('authorization', token).send({message: 'user logged', user: user});
-        }
-        res.status(400).send('Invalid credentials');
+            res.status(200).header('authorization', token).send({message: 'user logged', user: user.rows});
+        } else res.status(400).send('Invalid credentials');
 
     } catch(err) {
         res.status(500).send(err.message)
