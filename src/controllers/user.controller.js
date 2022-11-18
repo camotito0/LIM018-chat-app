@@ -9,7 +9,7 @@ const updateUser = async (req, res) => {
         WHERE id = $4 RETURNING *`, [username, email, password, id]);
         res.status(200).send({message:'User updated', user: user.rows})
     } catch(err) {
-        res.status(500).send({Error: err.message})
+        res.status(500).send(err.message)
     }
 }
 
@@ -19,16 +19,16 @@ const deleteUser = async (req, res) => {
         await client.query(`DELETE FROM users WHERE id = $1`, [id]);
         res.status(200).send({message:'User deleted'})
     } catch(err) {
-        res.status(500).send({Error: err.message})
+        res.status(500).send(err.message)
     }
 }
 
-const getUsers = async (req,res) => {
+const getUsers = async (req, res) => {
     try {
         const users = await client.query('SELECT * FROM users');
         res.status(200).send({message: 'All users', users: users.rows})
     } catch(err) {
-        res.status(500).send({Error: err.message})
+        res.status(500).send(err.message)
     }
 }
 

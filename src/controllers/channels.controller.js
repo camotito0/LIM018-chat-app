@@ -35,9 +35,8 @@ const deleteChannel = async (req, res) => {
 
 const getUserChannelsJoin =  async (req, res) => {
     try {
-        const channels = await client.query(`SELECT u.id, u.username, c.id, c.name FROM users u, channels c
-        WHERE u.id = c.user_id`);
-        res.status(200).send({message:'Channels by user', channels:channels})
+        const channels = await client.query(`SELECT u.id, u.username, c.id, c.name FROM users u, channels c WHERE u.id = c.user_id`);
+        res.status(200).send({message:'Channels by user', channels:channels.rows})
     } catch(err) {
         res.status(500).send(err.message)
     }
@@ -52,10 +51,32 @@ const getAllChannels = async (req, res) => {
     }
 }
 
+const addUserToChannel = async (req, res) => {
+    try {
+        const {channel_id, user_id} = req.body;
+        await client.query(`INSERT INTO channels_users(channel_id, user_id) VALUES($1,$2)`, [channel_id, user_id]);
+        res.status(200).send({message:'User added to channel'})
+    } catch(err) {
+        res.status(500).send(err.message)
+    }
+}
+
+const usersAddedToChannels = async (req, res) => {
+    try {
+        const channels = await client.query(`SELECT u.id, u.username, c.id, c.name FROM users AS u JOIN channels_users AS cu ON cu.user_id = u.id
+        JOIN channels AS c ON cu.channel_id = c.id`);
+        res.status(200).send({message:'User added to channel', channels: channels})
+    } catch(err) {
+        res.status(500).send(err.message)
+    }
+}
+
 module.exports = {
     createChannel,
     updateChannel,
     deleteChannel,
     getUserChannelsJoin,
-    getAllChannels
+    getAllChannels,
+    addUserToChannel,
+    usersAddedToChannels
 }
