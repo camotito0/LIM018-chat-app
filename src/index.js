@@ -55,6 +55,6 @@ socketIO.on('connection', socket => {
 	})
 })
 
-server.listen(4000, () => {
+server.listen(PORT, () => {
     console.log('listening on 4000');
 });
