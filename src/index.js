@@ -32,9 +32,6 @@ const socketIO = new Server(server, {
     }
 })
 
-// actual users
-let users = [];
-
 socketIO.on('connection', socket => {
 	console.log(`⚡: ${socket.id} user just connected!`);
 
@@ -57,51 +54,6 @@ socketIO.on('connection', socket => {
 		console.log('🔥: A user disconnected');
 	})
 })
-
-/* io.on('connection', (socket) => {
-	console.log('new client conected')
-	socket.on('join server', (username) => {
-		const user = {
-			username,
-			id: socket.id
-		};
-		users.push(user);
-		io.emit('new user', users)
-	})
-
-	
-	// hear when a user join to a room
-	socket.on('join_room', (room) => {
-		console.log(room);
-		socket.join(room);
-	});
-	
-	socket.on('message', (data) => {
-		console.log(data)
-		// message, room
-		const {room, message, username} = data;
-		socket.to(room).emit('message', {
-			message,
-			user: username
-		});
-	});
-	
-	// comments
-	// join event
-   socket.on('join room', (room, cb) => {
-	   socket.join(room);
-	   cb(messages[room]);
-   })
-	socket.on('typing', ({room}) => {
-		socket.to(room).emit('message', 'someone is typing');
-	});
-
-	socket.on('stopped_typing', ({room}) => {
-		socket.to(room).emit('message', 'stopped typing');
-	});
-
-}); */
-
 
 server.listen(4000, () => {
     console.log('listening on 4000');
